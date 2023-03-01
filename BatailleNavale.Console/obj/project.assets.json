@@ -1,11 +1,49 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {}
+    "net6.0": {
+      "BatailleNavale.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "BatailleNavale.Repo": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/BatailleNavale.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BatailleNavale.Core.dll": {}
+        }
+      },
+      "BatailleNavale.Repo/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/BatailleNavale.Repo.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BatailleNavale.Repo.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "BatailleNavale.Core/1.0.0": {
+      "type": "project",
+      "path": "../BatailleNavale.Core/BatailleNavale.Core.csproj",
+      "msbuildProject": "../BatailleNavale.Core/BatailleNavale.Core.csproj"
+    },
+    "BatailleNavale.Repo/1.0.0": {
+      "type": "project",
+      "path": "../BatailleNavale.Repo/BatailleNavale.Repo.csproj",
+      "msbuildProject": "../BatailleNavale.Repo/BatailleNavale.Repo.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0": []
+    "net6.0": [
+      "BatailleNavale.Core >= 1.0.0",
+      "BatailleNavale.Repo >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\alexi\\.nuget\\packages\\": {}
@@ -31,7 +69,14 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Core\\BatailleNavale.Core.csproj": {
+              "projectPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Core\\BatailleNavale.Core.csproj"
+            },
+            "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Repo\\BatailleNavale.Repo.csproj": {
+              "projectPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Repo\\BatailleNavale.Repo.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

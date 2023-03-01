@@ -8,4 +8,9 @@
         <RootNamespace>Navale</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BatailleNavale.Core\BatailleNavale.Core.csproj" />
+      <ProjectReference Include="..\BatailleNavale.Repo\BatailleNavale.Repo.csproj" />
+    </ItemGroup>
+
 </Project>
