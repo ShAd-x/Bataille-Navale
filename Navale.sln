@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navale", "Navale\Navale.csproj", "{2CB2A0DB-AFE4-49E9-8B13-A41C26F1E9FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatailleNavale.Console", "BatailleNavale.Console\BatailleNavale.Console.csproj", "{2CB2A0DB-AFE4-49E9-8B13-A41C26F1E9FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{C97CBE46-64DD-4D23-8DD3-6396E5932948}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatailleNavale.Core", "BatailleNavale.Core\BatailleNavale.Core.csproj", "{C97CBE46-64DD-4D23-8DD3-6396E5932948}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary2", "ClassLibrary2\ClassLibrary2.csproj", "{BE47D8A8-8566-4267-934C-9FF75EA5225D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatailleNavale.Repo", "BatailleNavale.Repo\BatailleNavale.Repo.csproj", "{BE47D8A8-8566-4267-934C-9FF75EA5225D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

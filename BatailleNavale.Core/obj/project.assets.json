@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\ClassLibrary2\\ClassLibrary2.csproj",
-      "projectName": "ClassLibrary2",
-      "projectPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\ClassLibrary2\\ClassLibrary2.csproj",
+      "projectUniqueName": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Core\\BatailleNavale.Core.csproj",
+      "projectName": "BatailleNavale.Core",
+      "projectPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Core\\BatailleNavale.Core.csproj",
       "packagesPath": "C:\\Users\\alexi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\ClassLibrary2\\obj\\",
+      "outputPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\alexi\\AppData\\Roaming\\NuGet\\NuGet.Config"

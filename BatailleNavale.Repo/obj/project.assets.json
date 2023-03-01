@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\Navale\\Navale.csproj",
-      "projectName": "Navale",
-      "projectPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\Navale\\Navale.csproj",
+      "projectUniqueName": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Repo\\BatailleNavale.Repo.csproj",
+      "projectName": "BatailleNavale.Repo",
+      "projectPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Repo\\BatailleNavale.Repo.csproj",
       "packagesPath": "C:\\Users\\alexi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\Navale\\obj\\",
+      "outputPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Repo\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\alexi\\AppData\\Roaming\\NuGet\\NuGet.Config"
