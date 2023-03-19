@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qb2Ht5zh5hUIXAd3AbcSnjgSDl1zMpGWBmJ+InaolLU7eyzTtA4oPYvFDZADfrdXDIZM4QRk6kZiXp2xDVA+7A==",
+  "dgSpecHash": "3Cg9FKpycnXKXy4w/vyjivEFPTN6420Dkl1QtyuP9zEyr0/sMADOofthDM1ik4Fsz1vNdDxJBoHfrJxCVNwvOw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Core\\BatailleNavale.Core.csproj",
+  "projectFilePath": "/home/alexis/development/Bataille-Navale/BatailleNavale.Core/BatailleNavale.Core.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

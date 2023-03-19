@@ -46,19 +46,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\alexi\\.nuget\\packages\\": {}
+    "/home/alexis/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Console\\BatailleNavale.Console.csproj",
+      "projectUniqueName": "/home/alexis/development/Bataille-Navale/BatailleNavale.Console/BatailleNavale.Console.csproj",
       "projectName": "BatailleNavale.Console",
-      "projectPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Console\\BatailleNavale.Console.csproj",
-      "packagesPath": "C:\\Users\\alexi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Console\\obj\\",
+      "projectPath": "/home/alexis/development/Bataille-Navale/BatailleNavale.Console/BatailleNavale.Console.csproj",
+      "packagesPath": "/home/alexis/.nuget/packages/",
+      "outputPath": "/home/alexis/development/Bataille-Navale/BatailleNavale.Console/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\alexi\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/alexis/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -70,11 +70,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Core\\BatailleNavale.Core.csproj": {
-              "projectPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Core\\BatailleNavale.Core.csproj"
+            "/home/alexis/development/Bataille-Navale/BatailleNavale.Core/BatailleNavale.Core.csproj": {
+              "projectPath": "/home/alexis/development/Bataille-Navale/BatailleNavale.Core/BatailleNavale.Core.csproj"
             },
-            "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Repo\\BatailleNavale.Repo.csproj": {
-              "projectPath": "C:\\Users\\alexi\\OneDrive\\Cours\\LP RGI SEMESTRE 1\\C#\\Navale\\BatailleNavale.Repo\\BatailleNavale.Repo.csproj"
+            "/home/alexis/development/Bataille-Navale/BatailleNavale.Repo/BatailleNavale.Repo.csproj": {
+              "projectPath": "/home/alexis/development/Bataille-Navale/BatailleNavale.Repo/BatailleNavale.Repo.csproj"
             }
           }
         }
@@ -104,7 +104,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\alexi\\.dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/alexis/.dotnet/sdk/7.0.101/RuntimeIdentifierGraph.json"
       }
     }
   }
