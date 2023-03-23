@@ -1,11 +1,11 @@
 ﻿namespace Console;
 
-using Repo;
+using Core;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        System.Console.WriteLine(new Repo().getJsonDatas());
+        System.Console.WriteLine(new Core().getDatas());
     }
 }
