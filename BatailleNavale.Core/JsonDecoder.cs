@@ -9,6 +9,12 @@ public class JsonDecoder
     {
         public int taille { get; set; }
         public string nom { get; set; }
+        
+        public Bateaux(int taille, string nom)
+        {
+            this.taille = taille;
+            this.nom = nom;
+        }
     }
 
     /// <summary>
@@ -19,5 +25,12 @@ public class JsonDecoder
         public int nbLignes { get; set; }
         public int nbColonnes { get; set; }
         public List<Bateaux> bateaux { get; set; }
+        
+        public JsonDatas(int nbLignes, int nbColonnes, List<Bateaux> bateaux)
+        {
+            this.nbLignes = nbLignes;
+            this.nbColonnes = nbColonnes;
+            this.bateaux = bateaux;
+        }
     }
 }
