@@ -23,25 +23,49 @@ public class Map
     public void displayMap()
     {
         char lettre = (char)65; // A
-        for (int i = 0; i <= nbLignes; i++)
+        for (int lignes = 0; lignes <= nbLignes; lignes++)
         {
-            for (int j = 0; j <= nbColonnes; j++)
+            for (int colonnes = 0; colonnes <= nbColonnes; colonnes++)
             {
-                if (i == 0)
+                // Si on est en haut a gauche on créer un espace
+                if (lignes == 0 && colonnes == 0)
+                {
+                    Console.Write("  ");
+                    continue;
+                }
+
+                // On met un espace entre chaque caractère
+                // Sauf si c'est la première colonne
+                if (colonnes > 0)
+                {
+                    Console.Write(" ");
+                }
+                else
+                {
+                    Console.Write(lignes < 10 ? lignes + " " : lignes + "");
+                    continue;
+                }
+
+                if (lignes == 0)
                 {
                     // On met un espace entre chaque lettre
-                    Console.Write(" ");
                     // On affiche les lettres dans l'ordre
-                    Console.Write(j == 0 ? "" : (char)(lettre+(j-1)));
-                    if (j == nbColonnes)
+                    Console.Write((char)(lettre+(colonnes-1)));
+                    if (colonnes == nbColonnes)
                     {
                         Console.WriteLine();
                     }
                 }
-
-                if (j == 0)
+                else
                 {
-                    Console.Write(i == 0 ? " " : i + "\n");
+                    if (colonnes == nbColonnes)
+                    {
+                        Console.WriteLine("-");
+                    }
+                    else
+                    {
+                        Console.Write("-");
+                    }
                 }
             }
         }

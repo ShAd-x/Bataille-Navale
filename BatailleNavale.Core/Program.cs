@@ -6,6 +6,8 @@ using Repo;
 
 public class Core
 {
+    string player1Name, player2Name;
+
     /**
      * Récupère les données JSON depuis l'API
      *
@@ -23,6 +25,8 @@ public class Core
      */
     public Map startGame()
     {
+ //       askPlayersName();
+
         // Données brutes
         String json = getDatas();
         // Données décodées
@@ -32,5 +36,22 @@ public class Core
         Map map = new Map(myjson.nbLignes, myjson.nbColonnes);
 
         return map;
+    }
+
+    public void askPlayersName()
+    {
+        do
+        {
+            Console.Write("Entrez le nom du joueur 1 : ");
+            player1Name = Console.ReadLine();
+        } while (string.IsNullOrWhiteSpace(player1Name));
+
+        do
+        {
+            Console.Write("Entrez le nom du joueur 2 : ");
+            player2Name = Console.ReadLine();
+        } while (string.IsNullOrWhiteSpace(player2Name));
+
+        Console.WriteLine("Les noms des deux joueurs sont {0} et {1}.", player1Name, player2Name);
     }
 }
