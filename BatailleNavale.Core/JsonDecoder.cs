@@ -2,9 +2,9 @@ namespace Core;
 
 public class JsonDecoder
 {
-    /// <summary>
-    /// Décode chaque bateau en fonction de la taille et du nom
-    /// </summary>
+    /**
+     * Décode chaque bateau en fonction de la taille et du nom
+     */
     public class Bateaux
     {
         public List<int[,]> coordonnees { get; set; }
@@ -18,9 +18,9 @@ public class JsonDecoder
         }
     }
 
-    /// <summary>
-    /// Déclaration des attributs qui sont nécéssaire pour les données JSON
-    /// </summary>
+    /**
+     * Déclaration des attributs qui sont nécéssaire pour les données JSON
+     */
     public class JsonDatas
     {
         public int nbLignes { get; set; }

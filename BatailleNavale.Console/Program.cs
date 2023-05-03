@@ -8,7 +8,7 @@ public class Program
     {
         // Instance du core
         Core core = new Core();
-
+        
         // On démarre la partie
         Map map = core.startGame();
         map.displayMap();

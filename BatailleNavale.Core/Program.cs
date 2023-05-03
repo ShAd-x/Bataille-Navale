@@ -13,11 +13,13 @@ public class Core
      */
     public string getDatas()
     {
-        return new Repo().getJsonDatas();
+        return new Repo().getJsonDatas().Result;
     }
 
     /**
      * Démarre la partie avec les informations fournies par l'api
+     *
+     * return Map
      */
     public Map startGame()
     {
@@ -27,20 +29,8 @@ public class Core
         JsonDecoder.JsonDatas myjson = JsonSerializer.Deserialize<JsonDecoder.JsonDatas>(json);
 
         // La map créee
-        Map map = createMap(myjson.nbLignes, myjson.nbColonnes);
+        Map map = new Map(myjson.nbLignes, myjson.nbColonnes);
 
         return map;
-    }
-    
-    /**
-     * Créer la map du jeu
-     * 
-     * <param name="nbLignes"></param>
-     * <param name="nbColonnes"></param>
-     * return Map
-     */
-    public Map createMap(int nbLignes, int nbColonnes)
-    {
-        return new Map(nbLignes, nbColonnes);
     }
 }
