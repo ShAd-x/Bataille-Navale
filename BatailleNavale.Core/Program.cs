@@ -19,7 +19,7 @@ public class Core
     /**
      * Démarre la partie avec les informations fournies par l'api
      */
-    public string startGame()
+    public Map startGame()
     {
         // Données brutes
         String json = getDatas();
@@ -29,7 +29,7 @@ public class Core
         // La map créee
         Map map = createMap(myjson.nbLignes, myjson.nbColonnes);
 
-        return json;
+        return map;
     }
     
     /**
