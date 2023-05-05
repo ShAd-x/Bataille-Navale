@@ -11,12 +11,15 @@ public class Map
     {
         this.nbLignes = nbLignes;
         this.nbColonnes = nbColonnes;
-        map = fillMap();
+        FillMap();
     }
 
-    public char[,] fillMap()
+    /**
+     * Rempli la carte au début de partie avec les bateaux et les cases vides
+     */
+    private void FillMap()
     {
-        char[,] map = new char[nbLignes, nbColonnes];
+        map = new char[nbLignes, nbColonnes];
         for (int lignes = 0; lignes < nbLignes; lignes++)
         {
             for (int colonnes = 0; colonnes < nbColonnes; colonnes++)
@@ -24,8 +27,6 @@ public class Map
                 map[lignes, colonnes] = '-';
             }
         }
-
-        return map;
     }
 
     /**
@@ -36,7 +37,6 @@ public class Map
      */
     public void displayMap()
     {
-        Console.WriteLine("Carte :");
         char lettre = (char)65; // A
         for (int lignes = 0; lignes < nbLignes; lignes++)
         {
