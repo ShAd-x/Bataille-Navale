@@ -34,6 +34,12 @@ public class Core
 
         // La map créee
         Map map = new Map(myjson.nbLignes, myjson.nbColonnes);
+        
+        foreach (JsonDecoder.Bateaux bateau in myjson.bateaux)
+        {
+            //Console.WriteLine(bateau.nom + " : " + bateau.taille);
+            //map.addBateau(bateau);
+        }
 
         return map;
     }
