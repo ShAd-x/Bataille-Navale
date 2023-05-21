@@ -4,8 +4,7 @@ public class Map
 {
     private int nbLignes;
     private int nbColonnes;
-    private char[,] map;
-    protected List<JsonDecoder.Bateaux> bateauxPlaced;
+    public char[,] map;
 
     public Map(int nbLignes, int nbColonnes)
     {
@@ -51,6 +50,7 @@ public class Map
                         {
                             Console.Write("   ");
                         }
+
                         if (i != nbColonnes)
                         {
                             Console.Write((char)(lettre + i) + " ");
@@ -64,30 +64,23 @@ public class Map
 
                 if (colonnes == 0)
                 {
-                    Console.Write(lignes+1 >= 10 ? lignes+1 + " " : lignes+1 + "  ");   
+                    Console.Write(lignes + 1 >= 10 ? lignes + 1 + " " : lignes + 1 + "  ");
                 }
-                
+
                 Console.Write(map[lignes, colonnes] + " ");
             }
 
             Console.WriteLine();
         }
     }
-    
-    /**
-     * Ajouter un bateau sur la carte
-     *
-     * <param name="bateau"></param>
-     * return void
-     */
-    public void addBateau(JsonDecoder.Bateaux bateau)
-    {
-        Console.WriteLine(bateau);
-        bateauxPlaced.Add(bateau);
-    }
 
     public bool IsAvailable(int x, int y)
     {
         return map[x, y] == '-';
+    }
+    
+    public bool IsHit(int x, int y)
+    {
+        return !IsAvailable(x, y);
     }
 }

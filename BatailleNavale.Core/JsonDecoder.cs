@@ -7,7 +7,6 @@ public class JsonDecoder
      */
     public class Bateaux
     {
-        public List<int[,]> coordonnees { get; set; }
         public int taille { get; set; }
         public string nom { get; set; }
         
