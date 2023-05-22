@@ -10,6 +10,6 @@ public class Program
         Core core = new Core();
         
         // On démarre la partie
-        core.startGame();
+        core.StartGame();
     }
 }

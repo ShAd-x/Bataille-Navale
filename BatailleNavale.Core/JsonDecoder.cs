@@ -7,6 +7,7 @@ public class JsonDecoder
      */
     public class Bateaux
     {
+        public List<int[,]> coordonnees { get; set; }
         public int taille { get; set; }
         public string nom { get; set; }
         
@@ -14,6 +15,12 @@ public class JsonDecoder
         {
             this.taille = taille;
             this.nom = nom;
+            this.coordonnees = new List<int[,]>();
+        }
+        
+        public void AddCoord(int y, int x)
+        {
+            coordonnees.Add(new int[y, x]);
         }
     }
 

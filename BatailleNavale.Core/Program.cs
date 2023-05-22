@@ -7,6 +7,7 @@ using Repo;
 public class Core
 {
     string player1Name, player2Name;
+    private bool IsFinished = false;
 
     /**
      * Récupère les données JSON depuis l'API
@@ -21,11 +22,11 @@ public class Core
     /**
      * Démarre la partie avec les informations fournies par l'api
      *
-     * return Map
+     * return void
      */
-    public Map startGame()
+    public void StartGame()
     {
-        askPlayersName();
+        AskPlayersName();
 
         // Données brutes
         String json = getDatas();
@@ -35,15 +36,16 @@ public class Core
         // La map créee
         Map map = new Map(myjson.nbLignes, myjson.nbColonnes);
         
-        placeBateau(myjson , map, 1);
-        placeBateau(myjson , map, 2);
+        PlaceBateau(myjson , map, 1);
+        PlaceBateau(myjson , map, 2);
 
-        
-        map.displayMap();
-        return map;
+        do
+        {
+            
+        } while (!IsFinished);
     }
 
-    public void askPlayersName()
+    public void AskPlayersName()
     {
         do
         {
@@ -68,7 +70,7 @@ public class Core
      * @param int joueur
      * @return void
      */
-    public void placeBateau(JsonDecoder.JsonDatas myjson, Map map, int joueur)
+    public void PlaceBateau(JsonDecoder.JsonDatas myjson, Map map, int joueur)
     {
         Console.WriteLine("On place les bateaux du joueur " + (joueur == 1 ? player1Name : player2Name));
         foreach (JsonDecoder.Bateaux bateau in myjson.bateaux)
@@ -78,7 +80,7 @@ public class Core
             {
                 bool error = false;
                 // On affiche la carte à chaque boucle
-                map.displayMap(joueur);
+                map.DisplayMap(joueur);
 
                 Console.WriteLine($"Bateau : {bateau.nom} de taille {bateau.taille}");
                 Console.Write("Donner la position du bateau à placer : ");
@@ -109,7 +111,7 @@ public class Core
                     if (IsOccupied(map, vertical, horizontal, bateau.taille, orientation))
                         continue;
 
-                    PlaceBateau(map, vertical, horizontal, bateau.taille, orientation, joueur);
+                    PlaceBateau(map, vertical, horizontal, bateau, orientation, joueur);
                     placed = true;
                 }
                 else
@@ -139,8 +141,13 @@ public class Core
         }
 
         if (
-            (direction == "H" && horizontal + tailleBateau > myjson.nbColonnes) ||
-            (direction == "V" && vertical + tailleBateau > myjson.nbLignes)
+            (
+                direction.Equals("H", StringComparison.OrdinalIgnoreCase) &&
+                horizontal + tailleBateau > myjson.nbColonnes
+            ) || (
+                direction.Equals("V", StringComparison.OrdinalIgnoreCase) &&
+                vertical + tailleBateau > myjson.nbLignes
+            )
         ) {
             Console.WriteLine("Erreur, le bateau dépasse de la carte");
             return false;
@@ -190,11 +197,13 @@ public class Core
      * @param int joueur
      * @return void
      */
-    private void PlaceBateau(Map map, int vertical, int horizontal, int tailleBateau, int direction, int joueur)
+    private void PlaceBateau(Map map, int vertical, int horizontal, JsonDecoder.Bateaux bateau, int direction, int joueur)
     {
-        for (int i = 0; i < tailleBateau; i++)
+        map.AddBateau(bateau);
+        for (int i = 0; i < bateau.taille; i++)
         {
             map.map[vertical, horizontal] = (joueur == 1 ? 'X' : 'O');
+            bateau.AddCoord(vertical, horizontal);
             
             // On incrémente la taille du bateau en fonction de la direction
             if (direction == 0)

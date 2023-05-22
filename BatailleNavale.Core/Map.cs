@@ -5,11 +5,13 @@ public class Map
     private int nbLignes;
     private int nbColonnes;
     public char[,] map;
+    public List<JsonDecoder.Bateaux> bateauxPlaced;
 
     public Map(int nbLignes, int nbColonnes)
     {
         this.nbLignes = nbLignes;
         this.nbColonnes = nbColonnes;
+        this.bateauxPlaced = new List<JsonDecoder.Bateaux>();
         FillMap();
     }
 
@@ -35,7 +37,7 @@ public class Map
      * @param int joueur
      * @return void
      */
-    public void displayMap(int joueur = 0)
+    public void DisplayMap(int joueur = 0)
     {
         char lettre = (char)65; // A
         for (int lignes = 0; lignes < nbLignes; lignes++)
@@ -122,5 +124,16 @@ public class Map
     public bool IsHit(int x, int y)
     {
         return !IsAvailable(x, y);
+    }
+    
+    /**
+     * Ajoute un bateau à la liste des bateaux placés
+     *
+     * @param JsonDecoder.Bateaux bateau
+     * @return void
+     */
+    public void AddBateau(JsonDecoder.Bateaux bateau)
+    {
+        bateauxPlaced.Add(bateau);
     }
 }
