@@ -47,13 +47,13 @@ public class Core
     {
         do
         {
-            Console.Write("Entrez le nom du joueur 1 : ");
+            Console.Write("Entrez le nom du joueur 1 (X) : ");
             player1Name = Console.ReadLine();
         } while (string.IsNullOrWhiteSpace(player1Name));
 
         do
         {
-            Console.Write("Entrez le nom du joueur 2 : ");
+            Console.Write("Entrez le nom du joueur 2 (O) : ");
             player2Name = Console.ReadLine();
         } while (string.IsNullOrWhiteSpace(player2Name));
 
@@ -62,87 +62,146 @@ public class Core
 
     /**
      * On place les bateau sur la carte
+     *
+     * @param JsonDecoder.JsonDatas myjson
+     * @param Map map
+     * @param int joueur
+     * @return void
      */
     public void placeBateau(JsonDecoder.JsonDatas myjson, Map map, int joueur)
     {
         Console.WriteLine("On place les bateaux du joueur " + (joueur == 1 ? player1Name : player2Name));
         foreach (JsonDecoder.Bateaux bateau in myjson.bateaux)
         {
-            map.displayMap();
-            Console.WriteLine($"Bateau : {bateau.nom} de taille {bateau.taille}");
             bool placed = false;
-            bool error = false;
             do
-            { 
+            {
+                bool error = false;
+                // On affiche la carte à chaque boucle
+                map.displayMap(joueur);
+
                 Console.WriteLine($"Bateau : {bateau.nom} de taille {bateau.taille}");
                 Console.Write("Donner la position du bateau à placer : ");
                 string position = Console.ReadLine();
                 Console.Write("Donner la direction (H ou V) du bateau à placer : ");
                 string direction = Console.ReadLine();
-
-                char lettre = position[0];
-                lettre = char.ToUpper(lettre);
-                int horizontal = (int)lettre - 65;
-                // TODO: >= 10
-                int vertical = int.Parse(position[1].ToString()) - 1;
                 
-                // if horizontal < 0 || horizontal > map.nbColonnes (erreur)
-                // if horizontal + bateau.taille > myjson.nbColonnes (erreur ça dépasse)
-                // if vertical + bateau.taille > myjson.nbLignes (erreur ça dépasse)
-
-                if (direction == "H" || direction == "h")
+                // On vérifie si les données sont saisies
+                if (direction == null || position == null)
                 {
-                    // On vérifie que les cases sont disponibles
-                    for (int i = 0; i < bateau.taille; i++)
-                    {
-                        if (!map.IsAvailable(vertical, horizontal + i))
-                        {
-                            error = true;
-                        }
-                    }
-
-                    if (error)
-                    {
-                        Console.WriteLine("Erreur, une des cases est déjà occupée");
-                        continue;
-                    }
-                    
-                    // On place le bateau
-                    for (int i = 0; i < bateau.taille; i++)
-                    {
-                        map.map[vertical, horizontal + i] = 'X';
-                        placed = true;
-                    }
+                    Console.WriteLine("Erreur, veuillez recommencer");
+                    continue;
                 }
-                else if (direction == "V" || direction == "v")
-                {
-                    // On vérifie que les cases sont disponibles
-                    for (int i = 0; i < bateau.taille; i++)
-                    {
-                        if (!map.IsAvailable(vertical + i, horizontal))
-                        {
-                            error = true;
-                        }
-                    }
-                    
-                    if (error)
-                    {
-                        Console.WriteLine("Erreur, une des cases est déjà occupée");
-                        continue;
-                    }
 
-                    // On place le bateau
-                    for (int i = 0; i < bateau.taille; i++)
-                    {
-                        map.map[vertical + i, horizontal] = 'O';
-                        placed = true;
-                    }
+                char lettre = char.ToUpper(position[0]);
+                int horizontal = lettre - 65;
+                int vertical = int.Parse(position.Substring(1)) - 1;
+                
+                if (!IsValidPosition(horizontal, vertical, bateau.taille, direction, myjson))
+                    continue;
+
+                if (
+                    direction.Equals("H", StringComparison.OrdinalIgnoreCase) ||
+                    direction.Equals("V", StringComparison.OrdinalIgnoreCase)
+                ) {
+                    int orientation = direction.Equals("H", StringComparison.OrdinalIgnoreCase) ? 0 : 1;
+
+                    if (IsOccupied(map, vertical, horizontal, bateau.taille, orientation))
+                        continue;
+
+                    PlaceBateau(map, vertical, horizontal, bateau.taille, orientation, joueur);
+                    placed = true;
                 }
                 else
                 {
-                    Console.WriteLine("Erreur de direction");
+                    Console.WriteLine("Erreur de direction (H ou V)");
                 }
             } while (!placed);
         }
     }
+    
+    /**
+     * Vérifie si la position est valide par rapport à la taille du bateau et la taille de la carte
+     *
+     * @param int horizontal
+     * @param int vertical
+     * @param int tailleBateau
+     * @param JsonDecoder.JsonDatas myjson
+     * @return bool
+     */
+    private bool IsValidPosition(int horizontal, int vertical, int tailleBateau, string direction, JsonDecoder.JsonDatas myjson)
+    {
+        if (horizontal < 0 || horizontal >= myjson.nbColonnes ||
+            vertical < 0 || vertical >= myjson.nbLignes)
+        {
+            Console.WriteLine("Erreur, la position est en dehors de la carte");
+            return false;
+        }
+
+        if (
+            (direction == "H" && horizontal + tailleBateau > myjson.nbColonnes) ||
+            (direction == "V" && vertical + tailleBateau > myjson.nbLignes)
+        ) {
+            Console.WriteLine("Erreur, le bateau dépasse de la carte");
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Vérifie si la position est occupée par rapport à la direction du bateau et sa taille
+     *
+     * @param Map map
+     * @param int vertical
+     * @param int horizontal
+     * @param int tailleBateau
+     * @param int direction
+     * @return bool
+     */
+    private bool IsOccupied(Map map, int vertical, int horizontal, int tailleBateau, int direction)
+    {
+        for (int i = 0; i < tailleBateau; i++)
+        {
+            if (!map.IsAvailable(vertical, horizontal))
+            {
+                Console.WriteLine("Erreur, une des cases est déjà occupée");
+                return true;
+            }
+            
+            // On incrémente la taille du bateau en fonction de la direction
+            if (direction == 0)
+                horizontal++;
+            else
+                vertical++;
+        }
+
+        return false;
+    }
+
+    /**
+     * Place le bateau sur la carte
+     *
+     * @param Map map
+     * @param int vertical
+     * @param int horizontal
+     * @param int tailleBateau
+     * @param int direction
+     * @param int joueur
+     * @return void
+     */
+    private void PlaceBateau(Map map, int vertical, int horizontal, int tailleBateau, int direction, int joueur)
+    {
+        for (int i = 0; i < tailleBateau; i++)
+        {
+            map.map[vertical, horizontal] = (joueur == 1 ? 'X' : 'O');
+            
+            // On incrémente la taille du bateau en fonction de la direction
+            if (direction == 0)
+                horizontal++;
+            else
+                vertical++;
+        }
+    }
+
 }

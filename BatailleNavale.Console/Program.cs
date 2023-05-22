@@ -10,7 +10,6 @@ public class Program
         Core core = new Core();
         
         // On démarre la partie
-        Map map = core.startGame();
-        map.displayMap();
+        core.startGame();
     }
 }
