@@ -2,7 +2,7 @@
 
 public class Repo
 {
-    public async Task<string> getJsonDatas()
+    public async Task<string> GetJsonDatas()
     {
         using var client = new HttpClient();
         client.DefaultRequestHeaders.Add("x-functions-key", "lprgi_api_key_2023");

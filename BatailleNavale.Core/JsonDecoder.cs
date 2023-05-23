@@ -22,6 +22,25 @@ public class JsonDecoder
         {
             coordonnees.Add(new int[y, x]);
         }
+
+        public bool IsABateau(int y, int x)
+        {
+            foreach (var coord in coordonnees)
+            {
+                int numRows = coord.GetLength(0);
+                int numCols = coord.GetLength(1);
+        
+                if (y >= 0 && y < numRows && x >= 0 && x < numCols)
+                {
+                    if (coord[y, x] == 1)
+                    {
+                        return true;
+                    }
+                }
+            }
+    
+            return false;
+        }
     }
 
     /**
