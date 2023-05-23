@@ -8,6 +8,9 @@ public class Core
     private string _player2Name = "Not defined";
     private bool _isFinished;
 
+    public List<(int, int)> historiquePlayer1 = new List<(int, int)>();
+    public List<(int, int)> historiquePlayer2 = new List<(int, int)>();
+    
     /**
      * Démarre la partie avec les informations fournies par l'api
      *
@@ -38,11 +41,12 @@ public class Core
     public void GameLoop(Map map, JsonDecoder.JsonDatas json)
     {
         PlaceBateau(json , map, 1);
-        PlaceBateau(json , map, 2);
+        //PlaceBateau(json , map, 2);
+        //_isFinished = true;
 
         do
         {
-            _isFinished = true;
+            CheckIfHit(AskPositionToShoot(map, 1), map, 1);
         } while (!_isFinished);
     }
     
@@ -61,7 +65,19 @@ public class Core
         {
             map.DisplayMap(joueur);
             position = Helpers.ReadNonEmptyString("Donner la position à attaquer : ");
-            error = false;
+            
+            int horizontal = Helpers.GetHorizontalPosition(position);
+            int vertical = Helpers.GetVerticalPosition(position);
+            
+            if (historiquePlayer1.Contains((vertical, horizontal)))
+            {
+                Console.WriteLine("Vous avez déjà attaqué cette position");
+            }
+            else
+            {
+                //historique.Add((vertical, horizontal));
+                error = false;
+            }
         } while (error);
 
         return position;
@@ -72,7 +88,10 @@ public class Core
         int horizontal = Helpers.GetHorizontalPosition(position);
         int vertical = Helpers.GetVerticalPosition(position);
         
-        
+        map.bateauxPlaced.ForEach(bateau =>
+        {
+            bool hit = bateau.IsABateau(vertical, horizontal);
+        });
     }
 
     /**
@@ -91,7 +110,6 @@ public class Core
             bool placed = false;
             do
             {
-                bool error = false;
                 // On affiche la carte à chaque boucle
                 map.DisplayMap(joueur);
 

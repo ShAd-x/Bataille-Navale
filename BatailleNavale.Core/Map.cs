@@ -113,19 +113,7 @@ public class Map
     {
         return map[x, y] == '-';
     }
-    
-    /**
-     * Vérifie si la position est un bateau touché
-     *
-     * @param int x
-     * @param int y
-     * @return bool
-     */
-    public bool IsHit(int x, int y)
-    {
-        return !IsAvailable(x, y);
-    }
-    
+
     /**
      * Ajoute un bateau à la liste des bateaux placés
      *
