@@ -2,8 +2,8 @@
 
 public class Map
 {
-    private int nbLignes;
-    private int nbColonnes;
+    public int nbLignes;
+    public int nbColonnes;
     public char[,] map;
     public List<JsonDecoder.Bateaux> bateauxPlaced;
 
@@ -113,15 +113,57 @@ public class Map
     {
         return map[x, y] == '-';
     }
+    
+    public bool IsPlayerBoat(int x, int y, int joueur)
+    {
+        return map[x, y] == (joueur == 1 ? 'X' : 'O');
+    }
 
     /**
      * Ajoute un bateau à la liste des bateaux placés
      *
      * @param JsonDecoder.Bateaux bateau
+     * @param int vertical
+     * @param int horizontal
+     * @param int direction
+     * @param int joueur
      * @return void
      */
-    public void AddBateau(JsonDecoder.Bateaux bateau)
+    public void AddBateau(JsonDecoder.Bateaux bateau, int vertical, int horizontal, int direction, int joueur)
     {
         bateauxPlaced.Add(bateau);
+        for (int i = 0; i < bateau.taille; i++)
+        {
+            map[vertical, horizontal] = (joueur == 1 ? 'X' : 'O');
+            bateau.AddCoord(vertical, horizontal);
+            
+            // On incrémente la taille du bateau en fonction de la direction
+            if (direction == 0)
+                horizontal++;
+            else
+                vertical++;
+        }
+    }
+    
+    /**
+     * Retire un bateau de la liste des bateaux placés et le retire de la carte
+     *
+     * @param JsonDecoder.Bateaux bateau
+     * @return void
+     */
+    public void RemoveBateau(JsonDecoder.Bateaux bateau)
+    {
+        Console.WriteLine("Coulé !");
+        bateauxPlaced.Remove(bateau);
+        foreach (var coord in bateau.coordonnees)
+        {
+            map[coord.Item1, coord.Item2] = '-';
+        }
+    }
+
+    public bool IsGameFinished()
+    {
+        // loop map and check if there is still a boat
+        return false;
     }
 }

@@ -40,13 +40,21 @@ public class Core
      */
     public void GameLoop(Map map, JsonDecoder.JsonDatas json)
     {
-        PlaceBateau(json , map, 1);
-        //PlaceBateau(json , map, 2);
-        //_isFinished = true;
+        foreach (JsonDecoder.Bateaux JsonBateau in json.bateaux)
+        {
+            PlaceBateau(JsonBateau , map, 1);
+        }
+        foreach (JsonDecoder.Bateaux JsonBateau in json.bateaux)
+        { 
+            JsonDecoder.Bateaux bateau = new JsonDecoder.Bateaux(JsonBateau.taille, JsonBateau.nom);
+            PlaceBateau(bateau , map, 2);
+        }
 
         do
         {
+            _isFinished = map.IsGameFinished();
             CheckIfHit(AskPositionToShoot(map, 1), map, 1);
+            CheckIfHit(AskPositionToShoot(map, 2), map, 2);
         } while (!_isFinished);
     }
     
@@ -64,10 +72,12 @@ public class Core
         do
         {
             map.DisplayMap(joueur);
-            position = Helpers.ReadNonEmptyString("Donner la position à attaquer : ");
+            position = Helpers.ReadNonEmptyString($"(J{joueur}) - Donner la position à attaquer : ");
             
             int horizontal = Helpers.GetHorizontalPosition(position);
             int vertical = Helpers.GetVerticalPosition(position);
+            // TODO : historique
+            
             
             if (historiquePlayer1.Contains((vertical, horizontal)))
             {
@@ -87,60 +97,84 @@ public class Core
     {
         int horizontal = Helpers.GetHorizontalPosition(position);
         int vertical = Helpers.GetVerticalPosition(position);
+
+        while (map.IsPlayerBoat(vertical, horizontal, joueur))
+        {
+            Console.WriteLine("C'est votre bateau ! Redonnez une position à attaquer");
+            position = AskPositionToShoot(map, joueur);
+            horizontal = Helpers.GetHorizontalPosition(position);
+            vertical = Helpers.GetVerticalPosition(position);
+        }
         
+        bool hasHit = false;
+        JsonDecoder.Bateaux bateauHit = null!;
         map.bateauxPlaced.ForEach(bateau =>
         {
             bool hit = bateau.IsABateau(vertical, horizontal);
+
+            if (!hit) return;
+            bateauHit = bateau;
+            hasHit = true;
         });
+        
+        if (hasHit)
+        {
+            Console.WriteLine("Touché !");
+            if (bateauHit.IsCoule())
+            {
+                map.RemoveBateau(bateauHit);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Manqué !");
+        }
     }
 
     /**
      * On place les bateau sur la carte avec les données saisies par les joueurs
      *
-     * @param JsonDecoder.JsonDatas myjson
+     * @param JsonDecoder.Bateaux bateau
      * @param Map map
      * @param int joueur
      * @return void
      */
-    public void PlaceBateau(JsonDecoder.JsonDatas myjson, Map map, int joueur)
+    public void PlaceBateau(JsonDecoder.Bateaux bateau, Map map, int joueur)
     {
         Console.WriteLine("On place les bateaux du joueur " + (joueur == 1 ? _player1Name : _player2Name));
-        foreach (JsonDecoder.Bateaux bateau in myjson.bateaux)
+        bool placed = false;
+        do
         {
-            bool placed = false;
-            do
-            {
-                // On affiche la carte à chaque boucle
-                map.DisplayMap(joueur);
+            // On affiche la carte à chaque boucle
+            map.DisplayMap(joueur);
 
-                Console.WriteLine($"Bateau : {bateau.nom} de taille {bateau.taille}");
-                string position = Helpers.ReadNonEmptyString("Donner la position du bateau à placer : ");
-                string direction = Helpers.ReadNonEmptyString("Donner la direction (H ou V) du bateau à placer : ");
+            Console.WriteLine($"Bateau : {bateau.nom} de taille {bateau.taille}");
+            string position = Helpers.ReadNonEmptyString("Donner la position du bateau à placer : ");
+            string direction = Helpers.ReadNonEmptyString("Donner la direction (H ou V) du bateau à placer : ");
 
-                int horizontal = Helpers.GetHorizontalPosition(position);
-                int vertical = Helpers.GetVerticalPosition(position);
-                
-                if (!IsValidPosition(horizontal, vertical, bateau.taille, direction, myjson))
+            int horizontal = Helpers.GetHorizontalPosition(position);
+            int vertical = Helpers.GetVerticalPosition(position);
+            
+            if (!IsValidPosition(horizontal, vertical, bateau.taille, direction, map))
+                continue;
+
+            if (
+                direction.Equals("H", StringComparison.OrdinalIgnoreCase) ||
+                direction.Equals("V", StringComparison.OrdinalIgnoreCase)
+            ) {
+                int orientation = direction.Equals("H", StringComparison.OrdinalIgnoreCase) ? 0 : 1;
+
+                if (IsOccupied(map, vertical, horizontal, bateau.taille, orientation))
                     continue;
 
-                if (
-                    direction.Equals("H", StringComparison.OrdinalIgnoreCase) ||
-                    direction.Equals("V", StringComparison.OrdinalIgnoreCase)
-                ) {
-                    int orientation = direction.Equals("H", StringComparison.OrdinalIgnoreCase) ? 0 : 1;
-
-                    if (IsOccupied(map, vertical, horizontal, bateau.taille, orientation))
-                        continue;
-
-                    PlaceBateauOnMap(map, vertical, horizontal, bateau, orientation, joueur);
-                    placed = true;
-                }
-                else
-                {
-                    Console.WriteLine("Erreur de direction (H ou V)");
-                }
-            } while (!placed);
-        }
+                map.AddBateau(bateau, vertical, horizontal, orientation, joueur);
+                placed = true;
+            }
+            else
+            {
+                Console.WriteLine("Erreur de direction (H ou V)");
+            }
+        } while (!placed);
     }
     
     /**
@@ -165,10 +199,10 @@ public class Core
      * @param JsonDecoder.JsonDatas myjson
      * @return bool
      */
-    private bool IsValidPosition(int horizontal, int vertical, int tailleBateau, string direction, JsonDecoder.JsonDatas myjson)
+    private bool IsValidPosition(int horizontal, int vertical, int tailleBateau, string direction, Map map)
     {
-        if (horizontal < 0 || horizontal >= myjson.nbColonnes ||
-            vertical < 0 || vertical >= myjson.nbLignes)
+        if (horizontal < 0 || horizontal >= map.nbColonnes ||
+            vertical < 0 || vertical >= map.nbLignes)
         {
             Console.WriteLine("Erreur, la position est en dehors de la carte");
             return false;
@@ -177,10 +211,10 @@ public class Core
         if (
             (
                 direction.Equals("H", StringComparison.OrdinalIgnoreCase) &&
-                horizontal + tailleBateau > myjson.nbColonnes
+                horizontal + tailleBateau > map.nbColonnes
             ) || (
                 direction.Equals("V", StringComparison.OrdinalIgnoreCase) &&
-                vertical + tailleBateau > myjson.nbLignes
+                vertical + tailleBateau > map.nbLignes
             )
         ) {
             Console.WriteLine("Erreur, le bateau dépasse de la carte");
@@ -218,32 +252,5 @@ public class Core
         }
 
         return false;
-    }
-
-    /**
-     * Place le bateau sur la carte
-     *
-     * @param Map map
-     * @param int vertical
-     * @param int horizontal
-     * @param int tailleBateau
-     * @param int direction
-     * @param int joueur
-     * @return void
-     */
-    private void PlaceBateauOnMap(Map map, int vertical, int horizontal, JsonDecoder.Bateaux bateau, int direction, int joueur)
-    {
-        map.AddBateau(bateau);
-        for (int i = 0; i < bateau.taille; i++)
-        {
-            map.map[vertical, horizontal] = (joueur == 1 ? 'X' : 'O');
-            bateau.AddCoord(vertical, horizontal);
-            
-            // On incrémente la taille du bateau en fonction de la direction
-            if (direction == 0)
-                horizontal++;
-            else
-                vertical++;
-        }
     }
 }

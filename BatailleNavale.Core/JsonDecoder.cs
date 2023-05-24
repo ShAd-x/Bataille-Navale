@@ -8,6 +8,7 @@ public class JsonDecoder
     public class Bateaux
     {
         public List<(int, int)> coordonnees { get; set; }
+        public int touches { get; set; }
         public int taille { get; set; }
         public string nom { get; set; }
         
@@ -15,6 +16,7 @@ public class JsonDecoder
         {
             this.taille = taille;
             this.nom = nom;
+            this.touches = 0;
             this.coordonnees = new List<(int, int)>();
         }
         
@@ -28,12 +30,21 @@ public class JsonDecoder
             (int, int) coord = (y, x);
             if (coordonnees.Contains(coord))
             {
-                coordonnees.Remove(coord);
-                Console.WriteLine("Hit !");
+                Console.WriteLine("Touché ! " + nom + " / " + taille);
+                touches += 1;
                 return true;
             }
-            Console.WriteLine("Miss !");
             return false;
+        }
+
+        /**
+         * Vérifie si le bateau est coulé
+         *
+         * @return bool
+         */
+        public bool IsCoule()
+        {
+            return touches == taille;
         }
     }
 
