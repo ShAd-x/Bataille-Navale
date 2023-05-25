@@ -20,17 +20,30 @@ public class JsonDecoder
             this.coordonnees = new List<(int, int)>();
         }
         
+        /**
+         * Ajoute les coordonnées du bateau
+         *
+         * @param int y
+         * @param int x
+         * @return void
+         */
         public void AddCoord(int y, int x)
         {
             coordonnees.Add((y, x));
         }
 
+        /**
+         * Vérifie si le bateau est touché et incrémente le nombre de touches
+         *
+         * @param int y
+         * @param int x
+         * @return bool
+         */
         public bool IsABateau(int y, int x)
         {
             (int, int) coord = (y, x);
             if (coordonnees.Contains(coord))
             {
-                Console.WriteLine("Touché ! " + nom + " / " + taille);
                 touches += 1;
                 return true;
             }
@@ -44,6 +57,8 @@ public class JsonDecoder
          */
         public bool IsCoule()
         {
+            // On compte le nombre de touches sur chaque bateau
+            // donc si le nombre de touches est égal à la taille du bateau alors il est coulé
             return touches == taille;
         }
     }

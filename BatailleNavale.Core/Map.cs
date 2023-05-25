@@ -11,14 +11,15 @@ public class Map
     {
         this.nbLignes = nbLignes;
         this.nbColonnes = nbColonnes;
+        this.map = new char[nbLignes, nbColonnes];
         this.bateauxPlaced = new List<JsonDecoder.Bateaux>();
-        FillMap();
+        FillMapWithEmptyChar();
     }
 
     /**
-     * Rempli la carte au début de partie avec les bateaux et les cases vides
+     * Rempli la carte au début de partie avec les cases vides
      */
-    private void FillMap()
+    private void FillMapWithEmptyChar()
     {
         map = new char[nbLignes, nbColonnes];
         for (int lignes = 0; lignes < nbLignes; lignes++)
@@ -37,7 +38,7 @@ public class Map
      * @param int joueur
      * @return void
      */
-    public void DisplayMap(int joueur = 0)
+    public void DisplayMapWithBoat(int joueur = 0)
     {
         char lettre = (char)65; // A
         for (int lignes = 0; lignes < nbLignes; lignes++)
@@ -129,7 +130,7 @@ public class Map
      * @param int joueur
      * @return void
      */
-    public void AddBateau(JsonDecoder.Bateaux bateau, int vertical, int horizontal, int direction, int joueur)
+    public void AddBateauToMap(JsonDecoder.Bateaux bateau, int vertical, int horizontal, int direction, int joueur)
     {
         bateauxPlaced.Add(bateau);
         for (int i = 0; i < bateau.taille; i++)
@@ -151,7 +152,7 @@ public class Map
      * @param JsonDecoder.Bateaux bateau
      * @return void
      */
-    public void RemoveBateau(JsonDecoder.Bateaux bateau)
+    public void RemoveBateauFromMap(JsonDecoder.Bateaux bateau)
     {
         Console.WriteLine("Coulé !");
         bateauxPlaced.Remove(bateau);
@@ -161,9 +162,34 @@ public class Map
         }
     }
 
-    public bool IsGameFinished()
+    /**
+     * Retourne le gagnant de la partie
+     *
+     * @return int
+     */
+    public int GetWinner()
     {
-        // loop map and check if there is still a boat
-        return false;
+        bool player1IsAlive = false;
+        bool player2IsAlive = false;
+        
+        // Pour chaque bateau encore en vie
+        foreach (var bateau in bateauxPlaced)
+        {
+            // Si le bateau appartient au joueur 1 ou au joueur 2
+            // On met à jour les booléens pour savoir si les joueurs ont encore des bateaux
+            if (map[bateau.coordonnees[0].Item1, bateau.coordonnees[0].Item2] == 'X')
+            {
+                player1IsAlive = true;
+            }
+            else if (map[bateau.coordonnees[0].Item1, bateau.coordonnees[0].Item2] == 'O')
+            {
+                player2IsAlive = true;
+            }
+        }
+        
+        // Retourne 0 si pas de gagnant (les deux joueurs sont encore en vie)
+        // Retourne 1 si le joueur 1 a gagné
+        // Retourne 2 si le joueur 2 a gagné
+        return (player1IsAlive && player2IsAlive ? 0 : player1IsAlive ? 1 : 2);
     }
 }

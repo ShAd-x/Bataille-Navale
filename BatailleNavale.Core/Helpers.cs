@@ -55,4 +55,15 @@ public class Helpers
         
         return input;
     }
+    
+    /**
+     * Vérifie si la partie est terminée
+     *
+     * @param Map map
+     * @return bool
+     */
+    internal static bool IsGameFinished(Map map)
+    {
+        return map.GetWinner() != 0;
+    }
 }

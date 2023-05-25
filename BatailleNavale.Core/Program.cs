@@ -42,20 +42,37 @@ public class Core
     {
         foreach (JsonDecoder.Bateaux JsonBateau in json.bateaux)
         {
-            PlaceBateau(JsonBateau , map, 1);
+            AskPlayerToPlaceBateau(JsonBateau , map, 1);
         }
         foreach (JsonDecoder.Bateaux JsonBateau in json.bateaux)
         { 
             JsonDecoder.Bateaux bateau = new JsonDecoder.Bateaux(JsonBateau.taille, JsonBateau.nom);
-            PlaceBateau(bateau , map, 2);
+            AskPlayerToPlaceBateau(bateau , map, 2);
         }
 
+        int joueurToPlay = 1;
         do
         {
-            _isFinished = map.IsGameFinished();
-            CheckIfHit(AskPositionToShoot(map, 1), map, 1);
-            CheckIfHit(AskPositionToShoot(map, 2), map, 2);
+            _isFinished = MakePlayerAttackAndVerifyWin(map, joueurToPlay);
+            joueurToPlay = joueurToPlay == 1 ? 2 : 1;
         } while (!_isFinished);
+        
+        Console.WriteLine("--[ Fin de partie ]--");
+        int winner = map.GetWinner();
+        Console.WriteLine($"Victoire du joueur {winner} ({(winner == 1 ? _player1Name : _player2Name)})");
+    }
+
+    /**
+     * Demande aux joueurs d'attaquer et vérifie si la partie est finie
+     *
+     * @param Map map
+     * @param int joueur
+     * @return bool
+     */
+    public bool MakePlayerAttackAndVerifyWin(Map map, int joueur)
+    {
+        CheckIfAttackHits(AskPositionToShoot(map, joueur), map, joueur);
+        return Helpers.IsGameFinished(map);
     }
     
     /**
@@ -71,7 +88,7 @@ public class Core
         string position;
         do
         {
-            map.DisplayMap(joueur);
+            map.DisplayMapWithBoat(joueur);
             position = Helpers.ReadNonEmptyString($"(J{joueur}) - Donner la position à attaquer : ");
             
             int horizontal = Helpers.GetHorizontalPosition(position);
@@ -93,7 +110,7 @@ public class Core
         return position;
     }
     
-    public void CheckIfHit(string position, Map map, int joueur)
+    public void CheckIfAttackHits(string position, Map map, int joueur)
     {
         int horizontal = Helpers.GetHorizontalPosition(position);
         int vertical = Helpers.GetVerticalPosition(position);
@@ -122,7 +139,7 @@ public class Core
             Console.WriteLine("Touché !");
             if (bateauHit.IsCoule())
             {
-                map.RemoveBateau(bateauHit);
+                map.RemoveBateauFromMap(bateauHit);
             }
         }
         else
@@ -139,14 +156,14 @@ public class Core
      * @param int joueur
      * @return void
      */
-    public void PlaceBateau(JsonDecoder.Bateaux bateau, Map map, int joueur)
+    public void AskPlayerToPlaceBateau(JsonDecoder.Bateaux bateau, Map map, int joueur)
     {
         Console.WriteLine("On place les bateaux du joueur " + (joueur == 1 ? _player1Name : _player2Name));
         bool placed = false;
         do
         {
             // On affiche la carte à chaque boucle
-            map.DisplayMap(joueur);
+            map.DisplayMapWithBoat(joueur);
 
             Console.WriteLine($"Bateau : {bateau.nom} de taille {bateau.taille}");
             string position = Helpers.ReadNonEmptyString("Donner la position du bateau à placer : ");
@@ -164,10 +181,10 @@ public class Core
             ) {
                 int orientation = direction.Equals("H", StringComparison.OrdinalIgnoreCase) ? 0 : 1;
 
-                if (IsOccupied(map, vertical, horizontal, bateau.taille, orientation))
+                if (IsPositionOccupied(map, vertical, horizontal, bateau.taille, orientation))
                     continue;
 
-                map.AddBateau(bateau, vertical, horizontal, orientation, joueur);
+                map.AddBateauToMap(bateau, vertical, horizontal, orientation, joueur);
                 placed = true;
             }
             else
@@ -234,7 +251,7 @@ public class Core
      * @param int direction
      * @return bool
      */
-    private bool IsOccupied(Map map, int vertical, int horizontal, int tailleBateau, int direction)
+    private bool IsPositionOccupied(Map map, int vertical, int horizontal, int tailleBateau, int direction)
     {
         for (int i = 0; i < tailleBateau; i++)
         {
