@@ -84,7 +84,7 @@ public class Core
      */
     public string AskPositionToShoot(Map map, int joueur)
     {
-        bool error = false;
+        bool error = true;
         string position;
         do
         {
@@ -93,18 +93,30 @@ public class Core
             
             int horizontal = Helpers.GetHorizontalPosition(position);
             int vertical = Helpers.GetVerticalPosition(position);
-            // TODO : historique
             
-            
-            if (historiquePlayer1.Contains((vertical, horizontal)))
+            if (horizontal < 0 || horizontal >= map.nbColonnes ||
+                vertical < 0 || vertical >= map.nbLignes)
             {
+                Console.WriteLine("Erreur, la position est en dehors de la carte");
+                continue;
+            }
+            
+            if (
+                joueur == 1 && historiquePlayer1.Contains((vertical, horizontal)) ||
+                joueur == 2 && historiquePlayer2.Contains((vertical, horizontal))
+            ) {
                 Console.WriteLine("Vous avez déjà attaqué cette position");
+                continue; 
             }
-            else
+
+            if (joueur == 1)
             {
-                //historique.Add((vertical, horizontal));
-                error = false;
+                historiquePlayer1.Add((vertical, horizontal));
+            } else if (joueur == 2)
+            {
+                historiquePlayer2.Add((vertical, horizontal));
             }
+            error = false;
         } while (error);
 
         return position;
