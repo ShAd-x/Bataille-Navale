@@ -8,8 +8,8 @@ public class Core
     private string _player2Name = "Not defined";
     private bool _isFinished;
 
-    public List<(int, int)> historiquePlayer1 = new List<(int, int)>();
-    public List<(int, int)> historiquePlayer2 = new List<(int, int)>();
+    private List<(int, int)> _historiquePlayer1 = new List<(int, int)>();
+    private List<(int, int)> _historiquePlayer2 = new List<(int, int)>();
     
     /**
      * Démarre la partie avec les informations fournies par l'api
@@ -38,7 +38,7 @@ public class Core
      * @param JsonDecoder.JsonDatas json
      * @return void
      */
-    public void GameLoop(Map map, JsonDecoder.JsonDatas json)
+    private void GameLoop(Map map, JsonDecoder.JsonDatas json)
     {
         foreach (JsonDecoder.Bateaux JsonBateau in json.bateaux)
         {
@@ -69,7 +69,7 @@ public class Core
      * @param int joueur
      * @return bool
      */
-    public bool MakePlayerAttackAndVerifyWin(Map map, int joueur)
+    private bool MakePlayerAttackAndVerifyWin(Map map, int joueur)
     {
         CheckIfAttackHits(AskPositionToShoot(map, joueur), map, joueur);
         return Helpers.IsGameFinished(map);
@@ -82,7 +82,7 @@ public class Core
      * @param int joueur
      * @return string
      */
-    public string AskPositionToShoot(Map map, int joueur)
+    private string AskPositionToShoot(Map map, int joueur)
     {
         bool error = true;
         string position;
@@ -94,16 +94,16 @@ public class Core
             int horizontal = Helpers.GetHorizontalPosition(position);
             int vertical = Helpers.GetVerticalPosition(position);
             
-            if (horizontal < 0 || horizontal >= map.nbColonnes ||
-                vertical < 0 || vertical >= map.nbLignes)
+            if (horizontal < 0 || horizontal >= map.NbColonnes ||
+                vertical < 0 || vertical >= map.NbLignes)
             {
                 Console.WriteLine("Erreur, la position est en dehors de la carte");
                 continue;
             }
             
             if (
-                joueur == 1 && historiquePlayer1.Contains((vertical, horizontal)) ||
-                joueur == 2 && historiquePlayer2.Contains((vertical, horizontal))
+                joueur == 1 && _historiquePlayer1.Contains((vertical, horizontal)) ||
+                joueur == 2 && _historiquePlayer2.Contains((vertical, horizontal))
             ) {
                 Console.WriteLine("Vous avez déjà attaqué cette position");
                 continue; 
@@ -111,10 +111,10 @@ public class Core
 
             if (joueur == 1)
             {
-                historiquePlayer1.Add((vertical, horizontal));
+                _historiquePlayer1.Add((vertical, horizontal));
             } else if (joueur == 2)
             {
-                historiquePlayer2.Add((vertical, horizontal));
+                _historiquePlayer2.Add((vertical, horizontal));
             }
             error = false;
         } while (error);
@@ -122,7 +122,15 @@ public class Core
         return position;
     }
     
-    public void CheckIfAttackHits(string position, Map map, int joueur)
+    /**
+     * Vérification si l'attaque touche un bateau
+     *
+     * @param string position
+     * @param Map map
+     * @param int joueur
+     * @return void
+     */
+    private void CheckIfAttackHits(string position, Map map, int joueur)
     {
         int horizontal = Helpers.GetHorizontalPosition(position);
         int vertical = Helpers.GetVerticalPosition(position);
@@ -137,7 +145,7 @@ public class Core
         
         bool hasHit = false;
         JsonDecoder.Bateaux bateauHit = null!;
-        map.bateauxPlaced.ForEach(bateau =>
+        map.BateauxPlaced.ForEach(bateau =>
         {
             bool hit = bateau.IsABateau(vertical, horizontal);
 
@@ -168,7 +176,7 @@ public class Core
      * @param int joueur
      * @return void
      */
-    public void AskPlayerToPlaceBateau(JsonDecoder.Bateaux bateau, Map map, int joueur)
+    private void AskPlayerToPlaceBateau(JsonDecoder.Bateaux bateau, Map map, int joueur)
     {
         Console.WriteLine("On place les bateaux du joueur " + (joueur == 1 ? _player1Name : _player2Name));
         bool placed = false;
@@ -211,7 +219,7 @@ public class Core
      *
      * return void
      */
-    public void AskPlayersName()
+    private void AskPlayersName()
     {
         _player1Name = Helpers.ReadNonEmptyString("Entrez le nom du joueur 1 (X) : ");
         _player2Name = Helpers.ReadNonEmptyString("Entrez le nom du joueur 2 (O) : ");
@@ -230,8 +238,8 @@ public class Core
      */
     private bool IsValidPosition(int horizontal, int vertical, int tailleBateau, string direction, Map map)
     {
-        if (horizontal < 0 || horizontal >= map.nbColonnes ||
-            vertical < 0 || vertical >= map.nbLignes)
+        if (horizontal < 0 || horizontal >= map.NbColonnes ||
+            vertical < 0 || vertical >= map.NbLignes)
         {
             Console.WriteLine("Erreur, la position est en dehors de la carte");
             return false;
@@ -240,10 +248,10 @@ public class Core
         if (
             (
                 direction.Equals("H", StringComparison.OrdinalIgnoreCase) &&
-                horizontal + tailleBateau > map.nbColonnes
+                horizontal + tailleBateau > map.NbColonnes
             ) || (
                 direction.Equals("V", StringComparison.OrdinalIgnoreCase) &&
-                vertical + tailleBateau > map.nbLignes
+                vertical + tailleBateau > map.NbLignes
             )
         ) {
             Console.WriteLine("Erreur, le bateau dépasse de la carte");

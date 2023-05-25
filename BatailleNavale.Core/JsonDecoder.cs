@@ -7,8 +7,8 @@ public class JsonDecoder
      */
     public class Bateaux
     {
-        public List<(int, int)> coordonnees { get; set; }
-        public int touches { get; set; }
+        public List<(int, int)> Coordonnees { get; set; }
+        public int Touches { get; set; }
         public int taille { get; set; }
         public string nom { get; set; }
         
@@ -16,8 +16,8 @@ public class JsonDecoder
         {
             this.taille = taille;
             this.nom = nom;
-            this.touches = 0;
-            this.coordonnees = new List<(int, int)>();
+            this.Touches = 0;
+            this.Coordonnees = new List<(int, int)>();
         }
         
         /**
@@ -29,7 +29,7 @@ public class JsonDecoder
          */
         public void AddCoord(int y, int x)
         {
-            coordonnees.Add((y, x));
+            Coordonnees.Add((y, x));
         }
 
         /**
@@ -42,9 +42,9 @@ public class JsonDecoder
         public bool IsABateau(int y, int x)
         {
             (int, int) coord = (y, x);
-            if (coordonnees.Contains(coord))
+            if (Coordonnees.Contains(coord))
             {
-                touches += 1;
+                Touches += 1;
                 return true;
             }
             return false;
@@ -59,7 +59,7 @@ public class JsonDecoder
         {
             // On compte le nombre de touches sur chaque bateau
             // donc si le nombre de touches est égal à la taille du bateau alors il est coulé
-            return touches == taille;
+            return Touches == taille;
         }
     }
 

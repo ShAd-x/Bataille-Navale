@@ -2,17 +2,17 @@
 
 public class Map
 {
-    public int nbLignes;
-    public int nbColonnes;
-    public char[,] map;
-    public List<JsonDecoder.Bateaux> bateauxPlaced;
+    public int NbLignes;
+    public int NbColonnes;
+    private char[,] _map;
+    public List<JsonDecoder.Bateaux> BateauxPlaced;
 
     public Map(int nbLignes, int nbColonnes)
     {
-        this.nbLignes = nbLignes;
-        this.nbColonnes = nbColonnes;
-        this.map = new char[nbLignes, nbColonnes];
-        this.bateauxPlaced = new List<JsonDecoder.Bateaux>();
+        this.NbLignes = nbLignes;
+        this.NbColonnes = nbColonnes;
+        this._map = new char[nbLignes, nbColonnes];
+        this.BateauxPlaced = new List<JsonDecoder.Bateaux>();
         FillMapWithEmptyChar();
     }
 
@@ -21,12 +21,12 @@ public class Map
      */
     private void FillMapWithEmptyChar()
     {
-        map = new char[nbLignes, nbColonnes];
-        for (int lignes = 0; lignes < nbLignes; lignes++)
+        _map = new char[NbLignes, NbColonnes];
+        for (int lignes = 0; lignes < NbLignes; lignes++)
         {
-            for (int colonnes = 0; colonnes < nbColonnes; colonnes++)
+            for (int colonnes = 0; colonnes < NbColonnes; colonnes++)
             {
-                map[lignes, colonnes] = '-';
+                _map[lignes, colonnes] = '-';
             }
         }
     }
@@ -41,21 +41,21 @@ public class Map
     public void DisplayMapWithBoat(int joueur = 0)
     {
         char lettre = (char)65; // A
-        for (int lignes = 0; lignes < nbLignes; lignes++)
+        for (int lignes = 0; lignes < NbLignes; lignes++)
         {
-            for (int colonnes = 0; colonnes < nbColonnes; colonnes++)
+            for (int colonnes = 0; colonnes < NbColonnes; colonnes++)
             {
                 // On génère la ligne du haut
                 if (lignes == 0 && colonnes == 0)
                 {
-                    for (int i = 0; i <= nbColonnes; i++)
+                    for (int i = 0; i <= NbColonnes; i++)
                     {
                         if (i == 0)
                         {
                             Console.Write("   ");
                         }
 
-                        if (i != nbColonnes)
+                        if (i != NbColonnes)
                         {
                             Console.Write((char)(lettre + i) + " ");
                         }
@@ -72,7 +72,7 @@ public class Map
                     Console.Write(lignes + 1 >= 10 ? lignes + 1 + " " : lignes + 1 + "  ");
                 }
 
-                if (map[lignes, colonnes] == 'X')
+                if (_map[lignes, colonnes] == 'X')
                 {
                     if (joueur == 2)
                     {
@@ -80,10 +80,10 @@ public class Map
                     } 
                     else 
                     {
-                        Console.Write(map[lignes, colonnes] + " ");
+                        Console.Write(_map[lignes, colonnes] + " ");
                     }
                 }
-                else if (map[lignes, colonnes] == 'O')
+                else if (_map[lignes, colonnes] == 'O')
                 {
                     if (joueur == 1)
                     {
@@ -91,12 +91,12 @@ public class Map
                     }
                     else 
                     {
-                        Console.Write(map[lignes, colonnes] + " ");
+                        Console.Write(_map[lignes, colonnes] + " ");
                     }
                 }
                 else
                 {
-                    Console.Write(map[lignes, colonnes] + " ");
+                    Console.Write(_map[lignes, colonnes] + " ");
                 }
             }
             Console.WriteLine();
@@ -112,12 +112,12 @@ public class Map
      */
     public bool IsAvailable(int x, int y)
     {
-        return map[x, y] == '-';
+        return _map[x, y] == '-';
     }
     
     public bool IsPlayerBoat(int x, int y, int joueur)
     {
-        return map[x, y] == (joueur == 1 ? 'X' : 'O');
+        return _map[x, y] == (joueur == 1 ? 'X' : 'O');
     }
 
     /**
@@ -132,10 +132,10 @@ public class Map
      */
     public void AddBateauToMap(JsonDecoder.Bateaux bateau, int vertical, int horizontal, int direction, int joueur)
     {
-        bateauxPlaced.Add(bateau);
+        BateauxPlaced.Add(bateau);
         for (int i = 0; i < bateau.taille; i++)
         {
-            map[vertical, horizontal] = (joueur == 1 ? 'X' : 'O');
+            _map[vertical, horizontal] = (joueur == 1 ? 'X' : 'O');
             bateau.AddCoord(vertical, horizontal);
             
             // On incrémente la taille du bateau en fonction de la direction
@@ -155,10 +155,10 @@ public class Map
     public void RemoveBateauFromMap(JsonDecoder.Bateaux bateau)
     {
         Console.WriteLine("Coulé !");
-        bateauxPlaced.Remove(bateau);
-        foreach (var coord in bateau.coordonnees)
+        BateauxPlaced.Remove(bateau);
+        foreach (var coord in bateau.Coordonnees)
         {
-            map[coord.Item1, coord.Item2] = '-';
+            _map[coord.Item1, coord.Item2] = '-';
         }
     }
 
@@ -173,15 +173,15 @@ public class Map
         bool player2IsAlive = false;
         
         // Pour chaque bateau encore en vie
-        foreach (var bateau in bateauxPlaced)
+        foreach (var bateau in BateauxPlaced)
         {
             // Si le bateau appartient au joueur 1 ou au joueur 2
             // On met à jour les booléens pour savoir si les joueurs ont encore des bateaux
-            if (map[bateau.coordonnees[0].Item1, bateau.coordonnees[0].Item2] == 'X')
+            if (_map[bateau.Coordonnees[0].Item1, bateau.Coordonnees[0].Item2] == 'X')
             {
                 player1IsAlive = true;
             }
-            else if (map[bateau.coordonnees[0].Item1, bateau.coordonnees[0].Item2] == 'O')
+            else if (_map[bateau.Coordonnees[0].Item1, bateau.Coordonnees[0].Item2] == 'O')
             {
                 player2IsAlive = true;
             }
